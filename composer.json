@@ -1,0 +1,15 @@
+{
+    "name": "nwscc/inventory",
+    "description": "Inventory management system for the CIS department.",
+    "authors": 
+    [
+        {
+            "name": "nwscc_inventory",
+            "email": "brick01@gmail.com"
+        }
+    ],
+    "require": 
+    {
+        "picqer/php-barcode-generator": "^0.2.2"
+    }
+}
