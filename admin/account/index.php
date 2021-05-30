@@ -109,7 +109,7 @@ switch ($action)
         // View admin accounts
         include 'account_view.php';
         break;
-
+/*
     case 'create':
         // Get admin user data
         $email = filter_input(INPUT_POST, 'email');
@@ -233,7 +233,7 @@ switch ($action)
         delete_admin($admin_id);
         redirect($app_path . 'admin/account');
         break;
-
+*/
     case 'logout':
         unset($_SESSION['admin']);
         redirect($app_path . 'admin/account');

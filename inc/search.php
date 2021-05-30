@@ -5,7 +5,7 @@
     global $conn;
 ?>
 <header>
-    <h1>NWSCC CIS Inventory</h1>
+    <h1>Hands Free Work Camp Participants</h1>
     <?php if (isset($_SESSION['admin'])) 
     {
         include('inc/navbar_admin.php');

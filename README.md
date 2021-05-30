@@ -1,2 +1,2 @@
-# nwscc
-The website I made for the CIS department
+# Hands Free Work Camp
+A helper for HFWC to track student locations

@@ -4,10 +4,11 @@
     {
         global $conn;
         
-        $password = sha1($email . $password);
+        //$password = sha1($email . $password);
+        $password = md5($password);
 
-        $query = 'SELECT * FROM `administrators`
-                WHERE `emailAddress` = ? AND `password` = ?';
+        $query = 'SELECT * FROM `membership_users`
+                WHERE `email` = ? AND `passMD5` = ?';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -22,7 +23,7 @@
     {
         global $conn;
 
-        $query = 'SELECT count(*) AS `adminCount` FROM `administrators`';
+        $query = 'SELECT count(*) AS `adminCount` FROM `membership_users`';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -36,7 +37,7 @@
     {
         global $conn;
 
-        $query = 'SELECT * FROM `administrators` ORDER BY `lastName`, `firstName`';
+        $query = 'SELECT * FROM `membership_users` ORDER BY `groupID`, `isApproved`';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -50,7 +51,7 @@
     {
         global $conn;
 
-        $query = 'SELECT * FROM `administrators` WHERE `adminID` = ?';
+        $query = 'SELECT * FROM `membership_users` WHERE `memberID` = ?';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -65,7 +66,7 @@
     {
         global $conn;
 
-        $query = 'SELECT * FROM `administrators` WHERE `emailAddress` = ?';
+        $query = 'SELECT * FROM `membership_users` WHERE `email` = ?';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -80,8 +81,8 @@
     {
         global $conn;
 
-        $query = 'SELECT * FROM `administrators`
-            WHERE `emailAddress` = ?';
+        $query = 'SELECT * FROM `membership_users`
+            WHERE `email` = ?';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -92,18 +93,19 @@
         return $valid;
     }
 
-    function add_admin($email, $first_name, $last_name, $password_1) 
+    function add_admin($email, $member_id, $group_id, $password_1) 
     {
         global $conn;
 
-        $password = sha1($email . $password_1);
+        //$password = sha1($email . $password_1);
+        $password = md5($password_1);
 
-        $query = 'INSERT INTO `administrators` (`emailAddress`, `password`, `firstName`, `lastName`)
+        $query = 'INSERT INTO `membership_users` (`email`, `passMD5`, `memberID`, `groupID`)
             VALUES (?, ?, ?, ?)';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        $statement->bind_param('ssss', $email, $password, $first_name, $last_name);
+        $statement->bind_param('ssss', $email, $password, $member_id, $group_id);
         $statement->execute();
         $admin_id = $conn->insert_id;
         $statement->close();
@@ -115,8 +117,8 @@
     {
         global $conn;
 
-        $query = 'UPDATE `administrators` SET `emailAddress` = ?,
-            `firstName` = ?, `lastName` = ? WHERE `adminID` = ?';
+        $query = 'UPDATE `membership_users` SET `email` = ?,
+            `firstName` = ?, `lastName` = ? WHERE `memberID` = ?';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -136,7 +138,7 @@
             }
             $password = sha1($email . $password_1);
             $query = 'UPDATE `administrators` SET `password` = ?
-                WHERE `adminID` = ?';
+                WHERE `memberID` = ?';
 
             $statement = $conn->stmt_init();
             $statement->prepare($query);
@@ -150,7 +152,7 @@
     {
         global $conn;
 
-        $query = 'DELETE FROM `administrators` WHERE `adminID` = ?';
+        $query = 'DELETE FROM `membership_users` WHERE `memberID` = ?';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);

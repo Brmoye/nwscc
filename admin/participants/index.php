@@ -2,45 +2,45 @@
     require_once('../../util/main.php');
     require_once('util/secure_conn.php');
     require_once('util/valid_admin.php');
-    require_once('database/inventory_db.php');
-    require_once('database/category_db.php');
+    //require_once('database/inventory_db.php');
+    require_once('database/participants_db.php');
 
     $limit = filter_input(INPUT_GET, 'limit', FILTER_VALIDATE_INT);
-    $inventory_id = filter_input(INPUT_GET, 'inventory_id', FILTER_VALIDATE_INT);
-    $category_id = filter_input(INPUT_GET, 'category_id', FILTER_VALIDATE_INT);
+    //$inventory_id = filter_input(INPUT_GET, 'inventory_id', FILTER_VALIDATE_INT);
+    $participant_id = filter_input(INPUT_GET, 'participant_id', FILTER_VALIDATE_INT);
 
     $action = strtolower(filter_input(INPUT_POST, 'action'));
     $submit = strtolower(filter_input(INPUT_POST, 'submit'));
     
 
-    if ($inventory_id !== NULL)
+    if ($participant_id !== NULL)
     {
-        $action = 'view_inventory';
+        $action = 'view_participant';
     }
     elseif ($limit !== null)
     {
-        $action = 'list_inventory';
+        $action = 'list_participants';
     }
     elseif ($action == NULL)
     {
         $action = strtolower(filter_input(INPUT_GET, 'action'));
         if ($action == NULL)
         {
-            $action = 'list_inventory';
+            $action = 'list_participants';
         }
     }
-    if ($submit == 'delete')
+    /*if ($submit == 'delete')
     {
-        $action = 'delete_inventory';
-    }
+        $action = 'delete_participant';
+    }*/
     
     switch ($action) 
     {
-        case 'list_inventory':
+        case 'list_participants':
             // display inventory list
-            include('inventory_list.php');
+            include('participants_list.php');
             break;
-
+/*
         case 'update_inventory':
             $inventory_id = filter_input(INPUT_POST, 'inventory_id',
                     FILTER_VALIDATE_INT);
@@ -66,15 +66,15 @@
                 header("Location: .?inventory_id=$inventory_id");
             }
             break;
-
-        case 'view_inventory':
-            $categories = get_categories();
-            $inventory_id = filter_input(INPUT_GET, 'inventory_id',
+*/
+        case 'view_participant':
+            //$categories = get_categories();
+            $participant_id = filter_input(INPUT_GET, 'participant_id',
                     FILTER_VALIDATE_INT);
-            $inventory = get_inventory($inventory_id);
-            include_once('inventory_add_edit.php');
+            $participant = get_particpant($participant_id);
+            include_once('participant_add_edit.php');
             break;
-
+/*
         case 'add_inventory':
             $category_id = filter_input(INPUT_POST, 'category_id',
                     FILTER_VALIDATE_INT);
@@ -110,5 +110,6 @@
             // Display the Inventory List page for the current category
             header("Location: .?category_id=$category_id");
             break;
+*/
     }
 ?>

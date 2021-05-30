@@ -1,6 +1,6 @@
 <footer>
-    <p>&copy; <?php echo date("Y"); ?> NWSCC</p>
-    <!-- <img src="images/footer-bg.jpg" alt="NWSCC CIS Logo"> -->
+    <p>&copy; <?php echo date("Y"); ?> HandsFree</p>
+    <!-- <img src="images/footer-bg.jpg" alt="Hands Free Logo"> -->
 </footer>
 </body>
 </html>

@@ -1,15 +1,14 @@
 {
-    "name": "nwscc/inventory",
-    "description": "Inventory management system for the CIS department.",
+    "name": "attendance",
+    "description": "Track Student Attendance and Presence",
     "authors": 
     [
         {
-            "name": "nwscc_inventory",
-            "email": "brick01@gmail.com"
+            "name": "Student Attendance/Presence Tracker",
+            "email": "chazz.m@gmail.com"
         }
     ],
     "require": 
     {
-        "picqer/php-barcode-generator": "^0.2.2"
     }
 }

@@ -2,7 +2,7 @@
     include('../inc/header.php'); 
 ?>
 <header>
-    <h1>NWSCC CIS Inventory</h1>
+    <h1>Hands Free Work Camp Participant</h1>
     <?php 
         if (isset($_SESSION['admin'])) 
         {
@@ -16,7 +16,7 @@
 </header>
 <main>
     <!-- display product -->
-    <?php include('../inc/inventory.php'); ?>
+    <?php include('../inc/participant.php'); ?>
 
 </main>
 <?php include('../inc/footer.php'); ?>

@@ -1,32 +1,38 @@
 <?php
     require_once('../util/main.php');
-    require_once('../database/inventory_db.php');
-    require_once('../database/category_db.php');
+    require_once('../database/participants_db.php');
+    //require_once('../database/category_db.php');
 
     //global $category_id;
 
     $limit = filter_input(INPUT_GET, 'limit', FILTER_VALIDATE_INT);
     
-    $category_id = filter_input(INPUT_GET, 'category_id', FILTER_VALIDATE_INT);
+    $group_id = filter_input(INPUT_GET, 'group_id', FILTER_VALIDATE_INT);
     
-    $inventory_id = filter_input(INPUT_GET, 'inventory_id', FILTER_VALIDATE_INT);
+    $colorteam_id = filter_input(INPUT_GET, 'colorteam_id', FILTER_VALIDATE_INT);
+    $participant_id = filter_input(INPUT_GET, 'participant_id', FILTER_VALIDATE_INT);
     $action = filter_input(INPUT_GET, 'action');
 
-    if ($category_id !== null) 
+    if ($group_id !== null) 
     {
-        $action = 'view_category';
+        $action = 'view_group';
     } 
-    elseif ($inventory_id !== null) 
+    elseif ($participant_id !== null) 
     {
-        $action = 'inventory';
+        $action = 'view_participant';
     }
-    elseif ($limit !== null)
+    elseif ($colorteam_id !== null) 
     {
-        $action = 'view_category';
+        $action = 'view_colorteam';
     }
-
+/*    elseif ($limit !== null)
+    {
+        $action = 'view_colorteam';
+    }
+*/
     switch ($action) 
     {
+/*
         // Display the specified category
         case 'view_category':
             // Get category data
@@ -38,21 +44,25 @@
             // Display category
             include('./category_view.php');
             break;
-
-        // Display the specified inventory
-        case 'inventory':
+*/
+        case 'view_participant':
             // Get inventory data
-            $inventory = get_inventory($inventory_id);
+            $participants = get_participant($participant_id);
 
-            // Display inventory
-            include('./inventory_view.php');
+            // Display Participant
+            include('./participant_view.php');
             break;
-        // Display list of categories
-        case 'list_categories';
+/*
+        // Display list of groups
+        case 'list_groups';
             $categories = get_categories();
             include('./category_list.php');
             break;
-
+        case 'list_colorteams';
+            $categories = get_categories();
+            include('./category_list.php');
+            break;
+*/
         default:
             $error_message = 'Unknown catalog action: ' . $action;
             include('errors/error.php');
