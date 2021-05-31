@@ -32,13 +32,8 @@
                 {
                     if (isset($_SESSION['admin'])) 
                     {
-                        printf("<div><a href='../admin/inventory/?inventory_id=%s'>%s</a></div>", 
-                            $result['inventoryID'], $result['name']);
-                    }
-                    else
-                    {
-                        printf("<div><a href='../catalog/?inventory_id=%s'>%s</a></div>", 
-                            $result['inventoryID'], $result['name']);
+                        printf("<div><a href='../admin/participants/?participant_id=%s'>%s</a></div>", 
+                            $result['id'], $result['lastname'].', ' $result['firstname']);
                     }
                 }
             } else 

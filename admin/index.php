@@ -6,7 +6,7 @@
     require_once('inc/pagination.php');
     require_once('../database/database.php');
     //require_once('../database/category_db.php');
-    require_once('../database/participant_db.php');
+    require_once('../database/participants_db.php');
     require_once('../database/admin_db.php');
     //print_r(get_all_admins());
 ?>
@@ -17,7 +17,7 @@
 <?php if (isset($_SESSION['admin'])) 
     { ?>
 <main>
-    <table id="all_inventory_table">
+    <table id="all_participants_table">
         <tr>
             <th>Name</th>
             <th>Group</th>
@@ -26,10 +26,11 @@
             <th>Special</th>
         </tr>
         <?php for( $i = 0; $i < count( $results->data ); $i++ ) : 
+            $id = $results->data[$i]['id'];
             $group = get_group($results->data[$i]['group']);
             $colorteam = get_colorteam($results->data[$i]['colorteam']);
             $status = get_add_status(
-                $results->data[$i]['id'], 
+                $id, 
                 $results->data[$i]['group'], 
                 $results->data[$i]['colorteam']);
             $lastname = $results->data[$i]['lastname'];
@@ -41,12 +42,12 @@
             }
         ?>
         <tr>
-            <td><a href="participants?participant_id=<?php echo $results->data[$i]['id']; ?>">
+            <td><a href="participants?action=view_participant&participant_id=<?php echo $id; ?>">
                 <?php echo $lastname.', '.$firstname; ?></td>
-            <td><a href="group?group_id=<?php echo $results->data[$i]['group']; ?>">
+            <td><a href="participants?group_id=<?php echo $results->data[$i]['group']; ?>&name=<?php echo htmlspecialchars($group); ?>">
                 <?php echo $group; ?></a>
             </td>
-            <td><a href="colorteam?colorteam_id=<?php echo $results->data[$i]['colorteam']; ?>">
+            <td><a href="participants?colorteam_id=<?php echo $results->data[$i]['colorteam']; ?>&name=<?php echo htmlspecialchars($colorteam); ?>">
                     <?php echo $colorteam; ?></a></td>
             <td><?php echo $status; ?></td>
             <td><?php echo $special; ?></td>

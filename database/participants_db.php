@@ -6,9 +6,11 @@
     {
         global $conn;
 
-        $query = 'SELECT lastname,firstname,group,colorteam,assignment,special,adult,gender
-                    FROM participants 
-                    ORDER BY group,lastname, id';
+        $query = 'SELECT p.id,p.lastname,p.firstname,p.group,p.colorteam,p.special,m.statusID
+                    FROM participants AS p
+                    LEFT JOIN participant_status_map AS m ON
+                        p.id = m.participantID
+                    ORDER BY p.group,p.lastname,p.id';
         
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -20,10 +22,12 @@
     {
         global $conn;
 
-        $query = 'SELECT lastname,group,adult,assignment,gender,special,colorteam
-                    FROM participants 
-                    WHERE colorteam = ?
-                    ORDER BY lastname, id';
+        $query = 'SELECT p.id,p.lastname,p.firstname,p.group,p.colorteam,p.special,m.statusID
+                    FROM participants AS p
+                    LEFT JOIN participant_status_map AS m ON
+                        p.id = m.participantID
+                    WHERE p.colorteam = ?
+                    ORDER BY p.lastname,p.id';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -38,10 +42,12 @@
     {
         global $conn;
 
-        $query = 'SELECT lastname,group,adult,assignment,gender,special,colorteam
-                    FROM participants 
-                    WHERE group = ?
-                    ORDER BY lastname, id';
+        $query = 'SELECT p.id,p.lastname,p.firstname,p.group,p.colorteam,p.special,m.statusID
+                    FROM participants AS p
+                    LEFT JOIN participant_status_map AS m ON
+                        p.id = m.participantID
+                    WHERE p.group = ?
+                    ORDER BY p.lastname,p.id';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -177,6 +183,10 @@
         $statement->execute();
         //return get_results($statement);
         $result = get_results($statement);
+        if (empty($result->data))
+        {
+            return "none";
+        }
         return $result->data[0]['colorgroup'];
     }
 
@@ -195,7 +205,37 @@
         $statement->execute();
         //return get_results($statement);
         $result = get_results($statement);
+        if (empty($result->data))
+        {
+            return "none";
+        }
         return $result->data[0]['groupname'];
+    }
+
+    function get_groups()
+    {
+        global $conn;
+
+        $query = 'SELECT id,groupname FROM register
+                    ORDER BY groupname';
+        
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+        $statement->execute();
+        return get_results($statement);
+    }
+
+    function get_colorteams()
+    {
+        global $conn;
+
+        $query = 'SELECT id,colorgroup FROM colorgroups
+                    ORDER BY colorgroup';
+        
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+        $statement->execute();
+        return get_results($statement);
     }
 
     // Get a specific status of a participant by statusID
@@ -275,6 +315,10 @@
     // Update status of a participant
     function update_status($participant_id, $status_id)
     {
+        if ($participant_id == NULL) {
+            return;
+        }
+
         global $conn;
 
         $query = 'UPDATE participant_status_map SET statusID = ?

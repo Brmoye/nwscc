@@ -11,32 +11,33 @@
 
     if ($action == 'view_group')
     {
-        $query = 'SELECT lastname,firstname,group,colorteam,special
+        $query = "SELECT p.id,p.lastname,p.firstname,p.group,p.colorteam,p.special,m.statusID
                     FROM participants AS p
-                    INNER JOIN participant_status_map AS m ON
+                    LEFT JOIN participant_status_map AS m ON
                         p.id = m.participantID
-                    WHERE p.group = " . $group_id;
-                    ORDER BY p.lastname,p.id';
+                    WHERE p.group = $group_id
+                    ORDER BY p.lastname,p.id";
     }
     else if ($action == 'view_colorteam')
     {
-        $query = 'SELECT lastname,firstname,group,colorteam,special
+        $query = "SELECT p.id,p.lastname,p.firstname,p.group,p.colorteam,p.special,m.statusID
                     FROM participants AS p
-                    INNER JOIN participant_status_map AS m ON
+                    LEFT JOIN participant_status_map AS m ON
                         p.id = m.participantID
-                    WHERE p.colorteam = " . $colorteam_id;
-                    ORDER BY p.lastname,p.id';
+                    WHERE p.colorteam = $colorteam_id
+                    ORDER BY p.lastname,p.id";
     }
     else
     {
-        $query = 'SELECT lastname,firstname,group,colorteam,special
-                    FROM participants
-                    INNER JOIN participant_status_map ON
-                        participants.id = participant_status_map.participantID
-                    ORDER BY group,lastname, id';
-    }
+        $query = 'SELECT p.id,p.lastname,p.firstname,p.group,p.colorteam,p.special,m.statusID
+                    FROM participants AS p
+                    LEFT JOIN participant_status_map AS m ON
+                        p.id = m.participantID
+                    ORDER BY p.group,p.lastname,p.id';
+}
   
     $Paginator  = new Paginator( $conn, $query );
   
     $results    = $Paginator->getData( $limit, $page );
+
 ?>

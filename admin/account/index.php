@@ -6,14 +6,14 @@ require_once('database/fields.php');
 require_once('database/validate.php');
 
 $action = filter_input(INPUT_POST, 'action');
-if (admin_count() == 0) 
+/*if (admin_count() == 0) 
 {
     if ($action != 'create') 
     {
         $action = 'view_account';
     }
 } 
-elseif (isset($_SESSION['admin'])) 
+else*/if (isset($_SESSION['admin'])) 
 {
     if ($action == null) 
     {
@@ -38,7 +38,7 @@ $validate = new Validate();
 $fields = $validate->getFields();
 
 // for the Add Account page and other pages
-$fields->addField('email', 'Must be valid email.');
+$fields->addField('username');
 $fields->addField('password_1');
 $fields->addField('password_2');
 $fields->addField('first_name');
@@ -51,7 +51,7 @@ switch ($action)
 {
     case 'view_login':
         // Clear login data
-        $email = '';
+        $username = '';
         $password = '';
         $password_message = '';
         
@@ -59,11 +59,11 @@ switch ($action)
         break;
     case 'login':
         // Get username/password
-        $email = filter_input(INPUT_POST, 'email');
+        $username = filter_input(INPUT_POST, 'username');
         $password = filter_input(INPUT_POST, 'password');
         
         // Validate user data
-        $validate->email('email', $email);
+        $validate->text('username', $username);
         $validate->text('password', $password, true, 6, 30);        
 
         // If validation errors, redisplay Login page and exit controller
@@ -74,9 +74,9 @@ switch ($action)
         }
         
         // Check database - if valid username/password, log in
-        if (is_valid_admin_login($email, $password)) 
+        if (is_valid_admin_login($username, $password)) 
         {
-            $_SESSION['admin'] = get_admin_by_email($email);
+            $_SESSION['admin'] = get_admin_by_email($username);
         } 
         else 
         {
@@ -94,7 +94,7 @@ switch ($action)
         $admins = get_all_admins();
 
         // Set up variables for add form
-        $email = '';
+        $username = '';
         $first_name = '';
         $last_name = '';
         if (!isset($email_message)) 

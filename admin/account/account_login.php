@@ -9,10 +9,10 @@
     <form action="." method="post" id="login_form">
         <input type="hidden" name="action" value="login">
         
-        <label>E-Mail:</label>
-        <input type="text" name="email"
-               value="<?php echo htmlspecialchars($email); ?>" size="30">
-        <?php echo $fields->getField('email')->getHTML(); ?><br>
+        <label>Username:</label>
+        <input type="text" name="username"
+               value="<?php echo htmlspecialchars($username); ?>" size="30">
+        <?php echo $fields->getField('username')->getHTML(); ?><br>
 
         <label>Password:</label>
         <input type="password" name="password" size="30">

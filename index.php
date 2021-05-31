@@ -17,7 +17,9 @@
     } ?>
 </header>
 <?php if (isset($_SESSION['admin'])) 
-    { ?>
+    { 
+echo "got session, result count:".count( $results->data )."\n<br/>\n";
+?>
 <main>
     <table id="all_participants_table">
         <tr>
@@ -41,15 +43,17 @@
             if ($special == "Allergies, dietary needs, physical needs, etc.") {
                 $special = "";
             }
+            echo "Read: $firstname $lastname $group $colorteam $status '$special'\n<br/>\n";
         ?>
 
         <tr>
-            <td><?php echo $lastname.', '.$firstname; ?></td>
+            <td><a href="catalog?participant_id=<?php echo $results->data[$i]['id']; ?>">
+                <?php echo $lastname.', '.$firstname; ?></td>
             <td><a href="catalog?group_id=<?php echo $results->data[$i]['group']; ?>">
-                    <?php echo $group; ?></a>
+                <?php echo $group; ?></a>
             </td>
             <td><a href="catalog?colorteam_id=<?php echo $results->data[$i]['colorteam']; ?>">
-                        <?php echo $colorteam; ?></a></td>
+                    <?php echo $colorteam; ?></a></td>
             <td><?php echo $status; ?></td>
             <td><?php echo $special; ?></td>
         </tr>
@@ -58,5 +62,12 @@
     <?php echo $Paginator->createLinks( $links, 'pagination pagination-sm' ); ?>
 </main>
 <?php
-    } //isset admin ?>
-<?php include('inc/footer.php'); ?>
+    } //isset admin 
+    else {
+?>
+<main>
+Login
+</main>
+<?php 
+    }
+include('inc/footer.php'); ?>

@@ -15,21 +15,44 @@
     <?php else: ?>
         <a href="<?php echo $account_url; ?>">Login</a>
     <?php endif; ?>
-    <a href="<?php echo $app_path . "admin/account"; ?>">Admin</a>
+    <!--<a href="<?php //echo $app_path . "admin/account"; ?>">Admin</a>-->
 
     <div class="dropdown">
         <button class="dropbtn">
-            <a href='<?php echo $app_path; ?>admin/participants?action=list_participants'>Edit Participants</a>
+            <a href='<?php echo $app_path; ?>admin/participants?action=list_participants'>Edit Groups</a>
         </button>
         <div class="dropdown-content">
             <!-- display links for all categories -->
             <?php
-            $participants = get_participants();
-            foreach($participants->data as $category) : ?>
+            $groups = get_groups();
+            foreach($groups->data as $pt) : ?>
                 <?php 
-                  $name = $category['name'];
-                  $id = $category['categoryID'];
-                  $url = $app_path . 'admin/participants?category_id=' . $id;
+                  $name = $pt['groupname'];
+                  $id = $pt['id'];
+                  $url = $app_path . 'admin/participants?group_id=' . $id;
+                ?>
+            <a href="<?php echo $url; ?>">
+                <?php echo htmlspecialchars($name); ?>
+            </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">
+            <a href='<?php echo $app_path; ?>admin/participants?action=list_participants'>Edit Color Teams</a>
+        </button>
+        <div class="dropdown-content">
+            <!-- display links for all categories -->
+            <?php
+            $groups = get_colorteams();
+            foreach($groups->data as $pt) : ?>
+                <?php 
+                  $name = $pt['colorgroup'];
+                  $id = $pt['id'];
+                  $url = $app_path . 'admin/participants?colorteam_id=' . $id;
+                  if ($name == "") {
+                      $name = "Default";
+                  }
                 ?>
             <a href="<?php echo $url; ?>">
                 <?php echo htmlspecialchars($name); ?>

@@ -10,7 +10,7 @@
     <h2>My Account</h2>
     <p><?php echo $_SESSION['admin']['firstName'] . ' ' .
             $_SESSION['admin']['lastName'] .
-            ' (' . $_SESSION['admin']['emailAddress'] . ')'; ?></p>
+            ' (' . $_SESSION['admin']['username'] . ')'; ?></p>
     <form action="." method="post">
         <input type="hidden" name="action" value="view_edit">
         <input type="hidden" name="admin_id" 
@@ -51,11 +51,11 @@
     <h2>Add an Administrator</h2>
     <form action="." method="post" id="add_admin_user_form">
         <input type="hidden" name="action" value="create">
-        <label>E-Mail:</label>
-        <input type="text" name="email"
-               value="<?php echo htmlspecialchars($email); ?>">
+        <label>Username:</label>
+        <input type="text" name="username"
+               value="<?php echo htmlspecialchars($username); ?>">
         <span class="error"><?php echo $email_message; ?></span>
-        <?php echo $fields->getField('email')->getHTML(); ?><br>
+        <?php echo $fields->getField('username')->getHTML(); ?><br>
         
         <label>First Name:</label>
         <input type="text" name="first_name"

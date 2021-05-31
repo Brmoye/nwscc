@@ -123,7 +123,7 @@ class Paginator
         
             if ( $start > 1 ) 
             {
-                $html   .= '<li><a href="?category_id=' . $category_id . '&limit=' . $this->_limit 
+                $html   .= '<li><a href="?participant_id=' . $category_id . '&limit=' . $this->_limit 
                     . '&page=1">1</a></li>';
                 $html   .= '<li class="disabled"><span>...</span></li>';
             }
@@ -138,7 +138,7 @@ class Paginator
             if ( $end < $last ) 
             {
                 $html   .= '<li class="disabled"><span>...</span></li>';
-                $html   .= '<li><a href="?category_id=' . $category_id . '&limit=' . $this->_limit . '&page=' 
+                $html   .= '<li><a href="?participant_id=' . $category_id . '&limit=' . $this->_limit . '&page=' 
                     . $last . '">' . $last . '</a></li>';
             }
         
