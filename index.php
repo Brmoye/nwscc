@@ -1,13 +1,11 @@
 <?php
     require_once('util/main.php');
     include_once('inc/header.php');
-    //require_once('database/category_db.php');
     require_once('database/participants_db.php');
     require_once('inc/pagination.php');
     require_once('util/valid_admin.php');
 ?>
 <header>
-    <!--<h1>Hands Free Work Camp Participants</h1>-->
     <?php if (isset($_SESSION['admin']))
     {
         include('inc/navbar_admin.php');

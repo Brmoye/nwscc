@@ -12,5 +12,4 @@
 
     <a href="<?php echo $account_url; ?>">Login</a>
     <a href="<?php echo $app_path; ?>admin">Admin</a>
-
 </nav>

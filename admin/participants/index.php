@@ -193,7 +193,7 @@
             header("Location: .?participant_id=$participant_id");
             break;
 
-            case 'view_participant':
+        case 'view_participant':
             $participant_id = filter_input(INPUT_GET, 'participant_id',
                     FILTER_VALIDATE_INT);
             $participants = get_participant($participant_id);
