@@ -5,7 +5,6 @@
     global $conn;
 ?>
 <header>
-    <h1>Hands Free Work Camp Participants</h1>
     <?php if (isset($_SESSION['admin']))
     {
         include('inc/navbar_admin.php');
@@ -22,8 +21,6 @@
         {
             // Search
             require "search_2.php";
-
-            //print_r($results->fetch_assoc());
 
             // Display results
             if ($results->fetch_assoc())
