@@ -33,11 +33,11 @@
                     FROM participants AS p
                     LEFT JOIN participant_status_map AS m ON
                         p.id = m.participantID
-                    ORDER BY p.group,p.lastname,p.id';
+                    ORDER BY p.lastname,p.firstname';
 }
-  
+
     $Paginator  = new Paginator( $conn, $query );
-  
+
     $results    = $Paginator->getData( $limit, $page );
 
 ?>

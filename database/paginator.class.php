@@ -48,7 +48,7 @@ class Paginator
         return $result;
     }
 
-    public function createLinks( $links, $list_class, $category_id = 0 ) 
+    public function createLinks( $links, $list_class, $view_id = 0, $view_name = "" )
     {
         if ( $this->_limit == 'all' ) 
         {
@@ -64,10 +64,9 @@ class Paginator
         $start      = ( ( $this->_page - $links ) > 0 ) ? $this->_page - $links : 1;
         $end        = ( ( $this->_page + $links ) < $last ) ? $this->_page + $links : $last;
 
-        if ($category_id == 0)
+        if ($view_id == 0)
         {
-      
-            $html       = '<div class="center-pagination"><ul class="' . $list_class . '">';
+            $html = '<div class="center-pagination"><ul class="' . $list_class . '">';
         
             $class      = ( $this->_page == 1 ) ? "disabled" : "";
 
@@ -117,13 +116,13 @@ class Paginator
 
             if ( ($this->_page - 1) >= 1 )
             {
-                $html       .= '<li class="' . $class . '"><a href="?category_id=' . $category_id 
+                $html       .= '<li class="' . $class . '"><a href="?' . $view_name . '=' . $view_id 
                     . '&limit=' . $this->_limit . '&page=' . ( $this->_page - 1 ) . '">&laquo;</a></li>';
             }
         
             if ( $start > 1 ) 
             {
-                $html   .= '<li><a href="?participant_id=' . $category_id . '&limit=' . $this->_limit 
+                $html   .= '<li><a href="?' . $view_name . '=' . $view_id . '&limit=' . $this->_limit 
                     . '&page=1">1</a></li>';
                 $html   .= '<li class="disabled"><span>...</span></li>';
             }
@@ -131,14 +130,14 @@ class Paginator
             for ( $i = $start ; $i <= $end; $i++ ) 
             {
                 $class  = ( $this->_page == $i ) ? "active" : "";
-                $html   .= '<li class="' . $class . '"><a href="?category_id=' . $category_id . '&limit=' 
+                $html   .= '<li class="' . $class . '"><a href="?' . $view_name . '=' . $view_id . '&limit=' 
                     . $this->_limit . '&page=' . $i . '">' . $i . '</a></li>';
             }
         
             if ( $end < $last ) 
             {
                 $html   .= '<li class="disabled"><span>...</span></li>';
-                $html   .= '<li><a href="?participant_id=' . $category_id . '&limit=' . $this->_limit . '&page=' 
+                $html   .= '<li><a href="?' . $view_name . '=' . $view_id . '&limit=' . $this->_limit . '&page=' 
                     . $last . '">' . $last . '</a></li>';
             }
         
@@ -146,7 +145,7 @@ class Paginator
 
             if ( $this->_page < $last )
             {
-                $html       .= '<li class="' . $class . '"><a href="?category_id=' . $category_id . '&limit=' 
+                $html       .= '<li class="' . $class . '"><a href="?' . $view_name . '=' . $view_id . '&limit=' 
                     . $this->_limit . '&page=' . ( $this->_page + 1 ) . '">&raquo;</a></li>';
             }
         

@@ -6,7 +6,7 @@
 ?>
 <header>
     <h1>Hands Free Work Camp Participants</h1>
-    <?php if (isset($_SESSION['admin'])) 
+    <?php if (isset($_SESSION['admin']))
     {
         include('inc/navbar_admin.php');
     }
@@ -16,9 +16,9 @@
     } ?>
 </header>
 <main>
-    <?php 
+    <?php
         // Process search form when submitted
-        if (isset($_POST['search'])) 
+        if (isset($_POST['search']))
         {
             // Search
             require "search_2.php";
@@ -28,17 +28,17 @@
             // Display results
             if ($results->fetch_assoc())
             {
-                foreach ($results as $result) 
+                foreach ($results as $result)
                 {
-                    if (isset($_SESSION['admin'])) 
+                    if (isset($_SESSION['admin']))
                     {
-                        printf("<div><a href='../admin/participants/?participant_id=%s'>%s</a></div>", 
-                            $result['id'], $result['lastname'].', ' $result['firstname']);
+                        printf("<div><a href='../admin/participants/?participant_id=%s'>%s</a></div>",
+                            $result['id'], $result['lastname'].', '. $result['firstname']);
                     }
                 }
-            } else 
-            { 
-                echo "No results found"; 
+            } else
+            {
+                echo "No results found";
             }
         }
     ?>

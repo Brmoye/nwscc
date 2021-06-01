@@ -11,7 +11,7 @@
                     LEFT JOIN participant_status_map AS m ON
                         p.id = m.participantID
                     ORDER BY p.group,p.lastname,p.id';
-        
+
         $statement = $conn->stmt_init();
         $statement->prepare($query);
         $statement->execute();
@@ -31,9 +31,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $colorteam_id);
-        
+
         $statement->execute();
         return get_results($statement);
     }
@@ -51,9 +51,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $group_id);
-        
+
         $statement->execute();
         return get_results($statement);
     }
@@ -67,9 +67,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $participant_id);
-        
+
         $statement->execute();
         return get_results($statement);
     }
@@ -84,9 +84,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $group_id);
-        
+
         $statement->execute();
         $result = get_results($statement);
         return $result->data[0]['participantsCount'];
@@ -102,29 +102,39 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $colorteam_id);
-        
+
         $statement->execute();
         $result = get_results($statement);
         return $result->data[0]['participantsCount'];
     }
 
-    function update_participant($participant_id, $phone, $email, $assignment, $special, $colorteam)
+    function update_participant($participant_id, $group, $firstname, $lastname, $adult, $phone, $email, $assignment, $gender, $grade, $age, $shirtsize, $special, $colorteam)
     {
         global $conn;
 
-        $query = 'UPDATE participants SET phone = ?,
+        /*$query = 'UPDATE participants SET phone = ?,
                     email = ?, special = ?,
                     assignment = ?, colorteam = ?
-                    WHERE id = ?';
-        
+                    WHERE id = ?';*/
+        $query = 'UPDATE participants AS p SET
+                p.firstname = ?, p.lastname = ?, p.adult = ?, p.phone = ?,
+                p.email = ?, p.assignment = ?, p.gender = ?, p.grade = ?,
+                p.shirtsize = ?, p.special = ?, p.group = ?, p.age = ?,
+                p.colorteam = ?
+            WHERE p.id = ?';
+
+
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
-        $statement->bind_param('ssssii', $phone, $email, $special, 
-                        $assignment, $colorteam, $participant_id);
-        
+
+        $statement->bind_param('ssssssssssiiii',
+            $firstname, $lastname, $adult, $phone,
+            $email, $assignment, $gender, $grade,
+            $shirtsize, $special, $group, $age,
+            $colorteam,$participant_id);
+
         $statement->execute();
         $statement->close();
     }
@@ -133,19 +143,20 @@
         global $conn;
 
         $query = 'INSERT INTO participants
-                    (group, firstname, lastname, adult,
-                    phone, email, assignment, gender,
-                    grade, age, shirtsize, special, colorteam)
-                VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                (firstname, lastname, adult, phone,
+                email, assignment, gender, grade,
+                shirtsize, special, group, age, colorteam)
+            VALUES
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
-        $statement->bind_param('ssssi', $group, $firstname, $lastname, $adult,
-        $phone, $email, $assignment, $gender,
-        $grade, $age, $shirtsize, $special, $colorteam);
-        
+
+        $statement->bind_param('ssssssssssiii',
+            $firstname, $lastname, $adult, $phone,
+            $email, $assignment, $gender, $grade,
+            $shirtsize, $special, $group, $age, $colorteam);
+
         $statement->execute();
         $statement->close();
 
@@ -161,9 +172,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $participant_id);
-        
+
         $statement->execute();
         $statement->close();
     }
@@ -171,23 +182,62 @@
     // Get a specific name of colorteam by its id
     function get_colorteam($colorteam_id)
     {
+        if ($colorteam_id == NULL) {
+            return "none";
+        }
         global $conn;
 
-        $query = 'SELECT colorgroup FROM colorgroups WHERE id = ?';
+        $query = 'SELECT c.colorgroup
+            FROM colorgroups AS c
+            WHERE c.id = ?';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
-        $statement->bind_param('i', $group_id);
-        
+
+        $statement->bind_param('i', $colorteam_id);
+
         $statement->execute();
         //return get_results($statement);
         $result = get_results($statement);
-        if (empty($result->data))
+        $team_name = "none";
+        if (!empty($result->data) && $result->data[0]['colorgroup'] != NULL)
         {
-            return "none";
+            $team_name = $result->data[0]['colorgroup'];
         }
-        return $result->data[0]['colorgroup'];
+        return $team_name;
+    }
+
+    // Get a specific name of colorteam by its id
+    function get_full_colorteam($colorteam_id)
+    {
+        global $conn;
+
+        $query = 'SELECT * FROM colorgroups WHERE id = ?';
+
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+
+        $statement->bind_param('i', $colorteam_id);
+
+        $statement->execute();
+        return get_results($statement);
+    }
+
+    // Get a specific name of colorteam by its id
+    function get_colorteam_lead($colorteam_id)
+    {
+        $full_colorteam = get_full_colorteam($colorteam_id);
+        global $conn;
+
+        $query = 'SELECT * FROM participants WHERE id = ?';
+
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+
+        $statement->bind_param('i', $full_colorteam->data[0]['grouplead']);
+
+        $statement->execute();
+        return get_results($statement);
     }
 
     // Get a specific name of a group by its id
@@ -199,9 +249,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $group_id);
-        
+
         $statement->execute();
         //return get_results($statement);
         $result = get_results($statement);
@@ -212,13 +262,29 @@
         return $result->data[0]['groupname'];
     }
 
+    // Get a specific name of a group by its id
+    function get_full_group($group_id)
+    {
+        global $conn;
+
+        $query = 'SELECT * FROM register WHERE id = ?';
+
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+
+        $statement->bind_param('i', $group_id);
+
+        $statement->execute();
+        return get_results($statement);
+    }
+
     function get_groups()
     {
         global $conn;
 
         $query = 'SELECT id,groupname FROM register
                     ORDER BY groupname';
-        
+
         $statement = $conn->stmt_init();
         $statement->prepare($query);
         $statement->execute();
@@ -231,7 +297,20 @@
 
         $query = 'SELECT id,colorgroup FROM colorgroups
                     ORDER BY colorgroup';
-        
+
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+        $statement->execute();
+        return get_results($statement);
+    }
+
+    function get_statuses()
+    {
+        global $conn;
+
+        $query = 'SELECT id,status FROM statuses
+                    ORDER BY status';
+
         $statement = $conn->stmt_init();
         $statement->prepare($query);
         $statement->execute();
@@ -247,9 +326,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $participant_id);
-        
+
         $statement->execute();
         //return get_results($statement);
         $result = get_results($statement);
@@ -269,9 +348,9 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('i', $status_id);
-        
+
         $statement->execute();
         //return get_results($statement);
         $result = get_results($statement);
@@ -279,11 +358,10 @@
     }
 
     // Set a specific status of a participant by statusID
-    function add_status($participant_id, $group_id, $colorteam_id)
+    function add_status($participant_id, $group_id, $colorteam_id, $status_id = 1)
     {
         global $conn;
 
-        $default_status = 1;
         $query = 'INSERT INTO participant_status_map
                     (participantID, groupID, colorteamID, statusID)
                 VALUES
@@ -291,13 +369,13 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
-        $statement->bind_param('iiii', $participant_id, $group_id, $colorteam_id, $default_status);
-        
+
+        $statement->bind_param('iiii', $participant_id, $group_id, $colorteam_id, $status_id);
+
         $statement->execute();
         $statement->close();
 
-        return $default_status;
+        return $status_id;
     }
 
     // Get a specific status of a participant by statusID
@@ -323,12 +401,54 @@
 
         $query = 'UPDATE participant_status_map SET statusID = ?
                     WHERE participantID = ?';
-        
+
         $statement = $conn->stmt_init();
         $statement->prepare($query);
-        
+
         $statement->bind_param('ii', $status_id, $participant_id);
-        
+
+        $statement->execute();
+        $statement->close();
+    }
+
+    // Update status of participants
+    function update_group_status($group_id, $status_id)
+    {
+        if ($group_id == NULL) {
+            return;
+        }
+
+        global $conn;
+
+        $query = 'UPDATE participant_status_map SET statusID = ?
+                    WHERE groupID = ?';
+
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+
+        $statement->bind_param('ii', $status_id, $group_id);
+
+        $statement->execute();
+        $statement->close();
+    }
+
+    // Update status of participants
+    function update_colorteam_status($colorteam_id, $status_id)
+    {
+        if ($colorteam_id == NULL) {
+            return;
+        }
+
+        global $conn;
+
+        $query = 'UPDATE participant_status_map SET statusID = ?
+                    WHERE colorteamID = ?';
+
+        $statement = $conn->stmt_init();
+        $statement->prepare($query);
+
+        $statement->bind_param('ii', $status_id, $colorteam_id);
+
         $statement->execute();
         $statement->close();
     }

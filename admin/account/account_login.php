@@ -1,14 +1,13 @@
 <?php include('inc/header.php'); ?>
 
 <header>
-    <h1>Hands Free Work Camp Participants</h1>
     <?php include('inc/navbar.php'); ?>
 </header>
 <main>
     <h1>Admin Login</h1>
     <form action="." method="post" id="login_form">
         <input type="hidden" name="action" value="login">
-        
+
         <label>Username:</label>
         <input type="text" name="username"
                value="<?php echo htmlspecialchars($username); ?>" size="30">
@@ -20,7 +19,7 @@
 
 
         <input type="submit" value="Login">
-        <?php if (!empty($password_message)) : ?>         
+        <?php if (!empty($password_message)) : ?>
         <span class="error">
             <?php echo htmlspecialchars($password_message); ?>
         </span><br>

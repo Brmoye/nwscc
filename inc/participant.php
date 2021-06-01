@@ -1,11 +1,10 @@
 <?php
-    require_once('vendor/autoload.php');
     // Parse data
     $group = get_group($participants->data[0]['group']);
     $colorteam = get_colorteam($participants->data[0]['colorteam']);
     $status = get_add_status(
-        $participants->data[0]['id'], 
-        $participants->data[0]['group'], 
+        $participants->data[0]['id'],
+        $participants->data[0]['group'],
         $participants->data[0]['colorteam']);
     $lastname = $participants->data[0]['lastname'];
     $firstname = $participants->data[0]['firstname'];

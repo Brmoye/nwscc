@@ -4,10 +4,11 @@
     //require_once('database/category_db.php');
     require_once('database/participants_db.php');
     require_once('inc/pagination.php');
+    require_once('util/valid_admin.php');
 ?>
 <header>
-    <h1>Hands Free Work Camp Participants</h1>
-    <?php if (isset($_SESSION['admin'])) 
+    <!--<h1>Hands Free Work Camp Participants</h1>-->
+    <?php if (isset($_SESSION['admin']))
     {
         include('inc/navbar_admin.php');
     }
@@ -16,9 +17,8 @@
         include('inc/navbar.php');
     } ?>
 </header>
-<?php if (isset($_SESSION['admin'])) 
-    { 
-echo "got session, result count:".count( $results->data )."\n<br/>\n";
+<?php if (isset($_SESSION['admin']))
+    {
 ?>
 <main>
     <table id="all_participants_table">
@@ -29,12 +29,12 @@ echo "got session, result count:".count( $results->data )."\n<br/>\n";
             <th>Status</th>
             <th>Special</th>
         </tr>
-        <?php for( $i = 0; $i < count( $results->data ); $i++ ) : 
+        <?php for( $i = 0; $i < count( $results->data ); $i++ ) :
             $group = get_group($results->data[$i]['group']);
             $colorteam = get_colorteam($results->data[$i]['colorteam']);
             $status = get_add_status(
-                $results->data[$i]['id'], 
-                $results->data[$i]['group'], 
+                $results->data[$i]['id'],
+                $results->data[$i]['group'],
                 $results->data[$i]['colorteam']);
             $lastname = $results->data[$i]['lastname'];
             $firstname = $results->data[$i]['firstname'];
@@ -43,7 +43,6 @@ echo "got session, result count:".count( $results->data )."\n<br/>\n";
             if ($special == "Allergies, dietary needs, physical needs, etc.") {
                 $special = "";
             }
-            echo "Read: $firstname $lastname $group $colorteam $status '$special'\n<br/>\n";
         ?>
 
         <tr>
@@ -62,12 +61,12 @@ echo "got session, result count:".count( $results->data )."\n<br/>\n";
     <?php echo $Paginator->createLinks( $links, 'pagination pagination-sm' ); ?>
 </main>
 <?php
-    } //isset admin 
+    } //isset admin
     else {
 ?>
 <main>
 Login
 </main>
-<?php 
+<?php
     }
 include('inc/footer.php'); ?>

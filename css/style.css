@@ -33,6 +33,10 @@ main h1 {
     text-align: center;
 }
 
+main h2 {
+  text-align: center;
+}
+
 aside {
     float: left;
     width: 150px;
@@ -58,14 +62,14 @@ aside {
 .navbar .search-container {
     float: right;
   }
-  
+
   .navbar input[type=text] {
     padding: 3px;
     margin-top: 8px;
     font-size: 12px;
     border: none;
   }
-  
+
   .navbar .search-container button {
     float: right;
     padding: 3px;
@@ -76,7 +80,7 @@ aside {
     border: none;
     cursor: pointer;
   }
-  
+
   .navbar .search-container button:hover {
     background: #ccc;
   }
@@ -204,6 +208,76 @@ td, th {
     text-align: center;
 }
 
+.status_silver, #status_silver {
+  background-color: silver;
+}
+
+.status_gray, #status_gray {
+  background-color: #808080;
+}
+
+.status_black, #status_black {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.status_red, #status_red {
+  background-color: #ff0000;
+  color: #ffffff;
+}
+
+.status_maroon, #status_maroon {
+  background-color: #800000;
+  color: #ffffff;
+}
+
+.status_yellow, #status_yellow {
+  background-color: #ffff00;
+}
+
+.status_olive, #status_olive {
+  background-color: #707030;
+  color: #ffffff;
+}
+
+.status_lime, #status_lime {
+  background-color: #00ee00;
+}
+
+.status_green, #status_green {
+  background-color: #009000;
+  color: #ffffff;
+}
+
+.status_aqua, #status_aqua {
+  background-color: #00eeee;
+}
+
+.status_teal, #status_teal {
+  background-color: #00a0a0;
+  color: #ffffff;
+}
+
+.status_blue, #status_blue {
+  background-color: #0000ff;
+  color: #ffffff;
+}
+
+.status_navy, #status_navy {
+  background-color: #000080;
+  color: #ffffff;
+}
+
+.status_fuchsia, #status_fuchsia {
+  background-color: #ff00ff;
+  color: #ffffff;
+}
+
+.status_purple, #status_purple {
+  background-color: #900090;
+  color: #ffffff;
+}
+
 form {
     margin: 0;
 }
@@ -225,8 +299,8 @@ br {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 20%;
-    width: 20%;
+    height: 100%;
+    width: 100%;
 }
 
 .center-pagination {
@@ -334,15 +408,15 @@ ul.barcode_ind li > div {
 
 #inventory_info label {
   margin-top: 6px;
-  float:left; 
+  float:left;
   width:25%;
 }
 
-.col-75 {  
+.col-75 {
   float:left;
   width: 65%;
   margin-top: 6px;
-  margin-left: 25px; 
+  margin-left: 25px;
 }
 
 #login_form {
