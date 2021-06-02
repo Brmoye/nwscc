@@ -16,6 +16,9 @@
         $result = mysqli_stmt_get_result($statement);
 
         $result1 = $result->fetch_assoc();
+        if ($result1 == NULL || empty($result1) || count($result1) == 0) {
+            return false;
+        }
         $group = $result1['groupID'];
         $passValid = password_verify($password, $result1['passMD5']);
 
@@ -169,6 +172,9 @@
         $statement->execute();
         //return get_results($statement);
         $result = get_results($statement);
+        if ($result == NULL || empty($result) || empty($result->data) || count($result->data) == 0) {
+            return "anonymous";
+        }
         return $result->data[0]['name'];
     }
 
@@ -189,7 +195,7 @@
         global $conn;
 
         //$password = sha1($email . $password_1);
-        $password = password_hash($password_1, PASSWORD_DEFAULT );
+        $password = password_hash($password_1, PASSWORD_DEFAULT);
         if ($signup_date == "") {
             $signup_date = date("Y-m-d");
         }
@@ -253,6 +259,7 @@
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
+        // Pass in potential new $username and lookup based on $username_id (old username)
         $statement->bind_param('ssiiissssiss',
             $username, $email, $group_id, $isBanned,
             $isApproved, $fullName, $address, $city, $state,
@@ -260,7 +267,8 @@
         $statement->execute();
         $statement->close();
 
-        if (!empty($password_1) && !empty ($password_2))
+        // From here on, only use $username (new username)
+        if (!empty($password_1) && !empty($password_2))
         {
             if ($password_1 !== $password_2)
             {
@@ -273,10 +281,10 @@
             $query = 'UPDATE `membership_users` SET `passMD5` = ?
                 WHERE `memberID` = ?';
 
-            $password = password_hash($password_1, PASSWORD_DEFAULT );
+            $password = password_hash($password_1, PASSWORD_DEFAULT);
             $statement = $conn->stmt_init();
             $statement->prepare($query);
-            $statement->bind_param('si', $password, $username);
+            $statement->bind_param('ss', $password, $username);
             $statement->execute();
             $statement->close();
         }
@@ -284,7 +292,7 @@
             $query = 'UPDATE membership_users SET flags = ? WHERE memberID = ?';
             $statement = $conn->stmt_init();
             $statement->prepare($query);
-            $statement->bind_param('ss', $username, $flags);
+            $statement->bind_param('ss', $flags, $username);
             $statement->execute();
             $admin_id = $conn->insert_id;
             $statement->close();
@@ -293,7 +301,7 @@
             $query = 'UPDATE membership_users SET pass_reset_key = ? WHERE memberID = ?';
             $statement = $conn->stmt_init();
             $statement->prepare($query);
-            $statement->bind_param('ss', $username, $reset_key);
+            $statement->bind_param('ss', $reset_key, $username);
             $statement->execute();
             $admin_id = $conn->insert_id;
             $statement->close();
@@ -302,7 +310,7 @@
             $query = 'UPDATE membership_users SET pass_reset_expiry = ? WHERE memberID = ?';
             $statement = $conn->stmt_init();
             $statement->prepare($query);
-            $statement->bind_param('si', $username, $reset_expiry);
+            $statement->bind_param('is', $reset_expiry, $username);
             $statement->execute();
             $admin_id = $conn->insert_id;
             $statement->close();

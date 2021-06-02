@@ -254,8 +254,8 @@ switch ($action)
         $validate->email('email', $email);
         $validate->text('fullname', $fullname);
         $validate->text('username', $username);
-        $validate->text('password_1', $password_1, false, 6, 30);
-        $validate->text('password_2', $password_2, false, 6, 30);
+        $validate->text('password_1', $password_1, false, 6, 60);
+        $validate->text('password_2', $password_2, false, 6, 60);
 
         // If validation errors, redisplay Login page and exit controller
         if ($fields->hasErrors())
@@ -267,6 +267,10 @@ switch ($action)
         if ($password_1 !== $password_2)
         {
             $password_message = 'Passwords do not match.';
+            include 'admin/account/account_edit.php';
+            break;
+        } else if ($password_1 !== "" && strlen($password_1) < 6) {
+            $password_message = "Passwords must be at least 6 characters long. (Got ".strlen($password_1)." characters)";
             include 'admin/account/account_edit.php';
             break;
         }

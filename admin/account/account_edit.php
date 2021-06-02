@@ -103,20 +103,21 @@
             <input type="hidden" name="comments" value="<?php echo $comments; ?>">
         <?php } ?>
 
-        <label>New Password:</label>
-        <input type="password" name="password_1">
+        <label for="password_1">New Password:</label>
+        <input type="password" id="password_1" name="password_1">
         <span>Leave blank to leave unchanged</span>
         <?php echo $fields->getField('password_1')->getHTML(); ?><br>
 
-        <label>Retype Password:</label>
-        <input type="password" name="password_2">
+        <label for="password_2">Retype Password:</label>
+        <input type="password" id="password_2" name="password_2">
         <?php echo $fields->getField('password_2')->getHTML(); ?><br>
+
+        <span class="error">
+            <?php echo htmlspecialchars($password_message); ?>
+        </span><br><br>
 
         <label>&nbsp;</label>
         <input type="submit" value="Update Account">
-        <span class="error">
-            <?php echo htmlspecialchars($password_message); ?>
-        </span><br>
     </form>
     <form action="." method="post">
         <label>&nbsp;</label>
