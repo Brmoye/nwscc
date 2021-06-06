@@ -29,11 +29,12 @@
         </tr>
         <?php for( $i = 0; $i < count( $results->data ); $i++ ) :
             $group = get_group($results->data[$i]['group']);
-            $colorteam = get_colorteam($results->data[$i]['colorteam']);
+            $colorteam = get_schedule_color($results->data[$i]['scheduleID']);
             $status = get_add_status(
                 $results->data[$i]['id'],
                 $results->data[$i]['group'],
-                $results->data[$i]['colorteam']);
+                $results->data[$i]['scheduleID'],
+                $results->data[$i]['color']);
             $lastname = $results->data[$i]['lastname'];
             $firstname = $results->data[$i]['firstname'];
             $special = $results->data[$i]['special'];
@@ -49,7 +50,7 @@
             <td><a href="catalog?group_id=<?php echo $results->data[$i]['group']; ?>">
                 <?php echo $group; ?></a>
             </td>
-            <td><a href="catalog?colorteam_id=<?php echo $results->data[$i]['colorteam']; ?>">
+            <td><a href="catalog?colorteam_id=<?php echo $results->data[$i]['scheduleID']; ?>">
                     <?php echo $colorteam; ?></a></td>
             <td><?php echo $status; ?></td>
             <td><?php echo $special; ?></td>

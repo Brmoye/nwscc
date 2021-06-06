@@ -25,13 +25,14 @@
         <?php for( $i = 0; $i < count( $results->data ); $i++ ) :
             $id = $results->data[$i]['id'];
             $group = get_group($results->data[$i]['group']);
-            $my_colorteam_id=$results->data[$i]['colorteam'];
+            $my_colorteam_id=$results->data[$i]['scheduleID'];
             $colorteam = "";
             $status_id = $results->data[$i]['statusID'];
             $status = get_add_status(
                 $id,
                 $results->data[$i]['group'],
-                $results->data[$i]['colorteam']);
+                $my_colorteam_id,
+                $results->data[$i]['color']);
             $lastname = $results->data[$i]['lastname'];
             $firstname = $results->data[$i]['firstname'];
             $special = $results->data[$i]['special'];
@@ -42,7 +43,7 @@
 
             $colorteam_link = "";
             if ($my_colorteam_id != NULL && $my_colorteam_id != "") {
-                $colorteam = get_colorteam($my_colorteam_id);
+                $colorteam = get_schedule_color($my_colorteam_id);
                 $colorteam_link = '<a href="?colorteam_id='.$my_colorteam_id.'">'.$colorteam.'</a>';
             } else {
                 $colorteam = "none";

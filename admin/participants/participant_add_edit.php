@@ -36,7 +36,8 @@
                 'age' => '',
                 'shirtsize' => 'None',
                 'special' => 'Allergies, dietary needs, physical needs, etc.',
-                'colorteam' => ''
+                'scheduleID' => '',
+                'color' => ''
                 ]; ?>
         <?php endif; ?>
         <div class="add_edit_form">
@@ -58,19 +59,21 @@
             </select>
             <br>
 
-            <label class="col-25" for="colorteam">Color Team:</label>
+            <label class="col-25" for="colorteam">Schedule / Color Team:</label>
             <select class="edit_participant" id="colorteam" name="colorteam">
-            <?php foreach (get_colorteams()->data as $colorteam) :
-                if ($colorteam['id'] == $participants->data[0]['colorteam'])
+            <?php foreach (get_all_schedules()->data as $colorteam) :
+                if ($colorteam['scheduleID'] == $participants->data[0]['scheduleID'])
                 {
                     $selected = 'selected';
                 }
                 else
                 {
                     $selected = '';
-                } ?>
-                <option value="<?php echo $colorteam['id']; ?>" <?php echo $selected ?>>
-                    <?php echo htmlspecialchars($colorteam['colorgroup']); ?>
+                }
+                $colorteam_display_name = $colorteam['colorgroup'].' - '.$colorteam['firstname'].' '.$colorteam['lastname'];
+                ?>
+                <option value="<?php echo $colorteam['scheduleID']; ?>" <?php echo $selected ?>>
+                    <?php echo htmlspecialchars($colorteam_display_name); ?>
                 </option>
             <?php endforeach; ?>
             </select>

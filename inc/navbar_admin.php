@@ -78,11 +78,11 @@
         <div class="dropdown-content">
             <!-- display links for all categories -->
             <?php
-            $groups = get_colorteams();
-            foreach($groups->data as $pt) : ?>
+            $teams = get_colorteams();
+            foreach($teams->data as $pt) : ?>
                 <?php
-                  $name = $pt['colorgroup'];
-                  $id = $pt['id'];
+                  $name = $pt['displayColor'];
+                  $id = $pt['displayID'];
                   $url = $app_path . 'admin/participants?colorteam_id=' . $id;
                   if ($name == "") {
                       $name = "Default";

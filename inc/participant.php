@@ -1,11 +1,13 @@
 <?php
     // Parse data
     $group = get_group($participants->data[0]['group']);
-    $colorteam = get_colorteam($participants->data[0]['colorteam']);
+    $colorteam = get_schedule_color($participants->data[0]['scheduleID']);
+    $color_id = $participants->data[0]['color'];
     $status = get_add_status(
         $participants->data[0]['id'],
         $participants->data[0]['group'],
-        $participants->data[0]['colorteam']);
+        $participants->data[0]['scheduleID'],
+        $color_id);
     $lastname = $participants->data[0]['lastname'];
     $firstname = $participants->data[0]['firstname'];
     $adult = $participants->data[0]['adult'];

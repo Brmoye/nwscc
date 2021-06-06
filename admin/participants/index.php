@@ -8,14 +8,14 @@
     $participant_id = filter_input(INPUT_GET, 'participant_id', FILTER_VALIDATE_INT);
 
     $group_id = filter_input(INPUT_POST, 'group_id', FILTER_VALIDATE_INT);
-    if ($group_id == NULL) {
+    if ($group_id == NULL || $group_id === "") {
         $group_id = filter_input(INPUT_GET, 'group_id', FILTER_VALIDATE_INT);
     }
     $colorteam_id = filter_input(INPUT_POST, 'colorteam_id', FILTER_VALIDATE_INT);
-    if ($colorteam_id == NULL) {
+    if ($colorteam_id == NULL || $colorteam_id === "") {
         $colorteam_id = filter_input(INPUT_GET, 'colorteam_id', FILTER_VALIDATE_INT);
     }
-    if ($colorteam_id == "") {
+    if ($colorteam_id === "") {
         $colorteam_id = NULL;
     }
 

@@ -3,42 +3,48 @@
     require_once('util/secure_conn.php');
     require_once('util/valid_admin.php');
     include_once('inc/pagination.php');
-    if (empty($results->data))
-    {
-        $results = get_all_participants();
-    }
     if ($group_id != NULL) {
         $full_group = get_full_group($group_id);
         $display_name = get_group($group_id);
     } else if ($colorteam_id != NULL) {
-        $display_name = get_colorteam($colorteam_id);
+        $display_name = get_schedule_color($colorteam_id);
     }
 ?>
 <header>
     <?php include('../../inc/navbar_admin.php'); ?>
 </header>
 <main>
-    <?php if (count($results->data[0]) == 1) : ?>
         <h1><?php echo $display_name; ?></h1>
+        <?php
+        if ($group_id != NULL) {
+            echo '<h2>Group Lead: '.
+                $full_group->data[0]['contactname'].
+                ' '.$full_group->data[0]['contactphone'].'</h2>';
+        }
+        $team_leads = [];
+        if ($colorteam_id != NULL) {
+            $team_leads = get_colorteam_leads($colorteam_id);
+            foreach ($team_leads->data as $lead) {
+                echo '<h2>Team Lead: '.
+                    $lead['firstname'].' '.$lead['lastname'].
+                    ' '.$lead['phone'].
+                    '</h2><p><center>'.$lead['admin_notes'].
+                    ' - Working: '.$lead['workday'].'</center></p>';
+            }
+        }
+        ?>
+    <?php if ($results == NULL || count($results->data) == 0) : ?>
         <p>There are no participants to display.</p>
     <?php else : ?>
-        <h1><?php echo $display_name; ?></h1>
         <form action="" method="post">
         <?php
         if ($group_id != NULL) {
             echo '<input type="hidden" name="group_id" value="'.$group_id.'">
             ';
-            echo '<h2>Group Lead: '.
-                $full_group->data[0]['contactname'].
-                ' '.$full_group->data[0]['contactphone'].'</h2>';
         }
         if ($colorteam_id != NULL) {
             echo '<input type="hidden" name="colorteam_id" value="'.$colorteam_id.'">
             ';
-            $team_lead = get_colorteam_lead($colorteam_id);
-            echo '<h2>Team Lead: '.
-                $team_lead->data[0]['firstname'].' '.$team_lead->data[0]['lastname'].
-                ' '.$team_lead->data[0]['phone'].'</h2>';
         }
         if ($limit != NULL) {
             echo '<input type="hidden" name="limit" value="'.$limit.'">
@@ -67,17 +73,31 @@
         </tr>
         <?php for( $i = 0; $i < count( $results->data ); $i++ ) :
             $group = get_group($results->data[$i]['group']);
-            $my_colorteam_id = $results->data[$i]['colorteam'];
+            $my_colorteam_id = $results->data[$i]['scheduleID'];
+            $my_color_id = $results->data[$i]['color'];
             $colorteam = "";
             $id = $results->data[$i]['id'];
             $status_id = $results->data[$i]['statusID'];
             $status = get_add_status(
                 $id,
                 $results->data[$i]['group'],
-                $my_colorteam_id);
+                $my_colorteam_id, $my_color_id);
             $lastname = $results->data[$i]['lastname'];
             $firstname = $results->data[$i]['firstname'];
             $special = $results->data[$i]['special'];
+
+            $is_team_lead = false;
+            if ($team_leads !== NULL && $team_leads !== [] && count($team_leads->data) > 0) {
+                foreach ($team_leads->data as $lead) {
+                    if ($lead['grouplead'] == $id) {
+                        $is_team_lead = true;
+                        break;
+                    }
+                }
+            }
+            if ($is_team_lead) {
+                continue;
+            }
 
             if ($special == "Allergies, dietary needs, physical needs, etc.") {
                 $special = "";
@@ -85,7 +105,7 @@
 
             $colorteam_link = "";
             if ($my_colorteam_id != NULL && $my_colorteam_id != "") {
-                $colorteam = get_colorteam($my_colorteam_id);
+                $colorteam = get_schedule_color($my_colorteam_id);
                 $colorteam_link = '<a href="?colorteam_id='.$my_colorteam_id.'">'.$colorteam.'</a>';
             } else {
                 $colorteam = "none";

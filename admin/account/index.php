@@ -2,6 +2,7 @@
 require_once('../../util/main.php');
 require_once('util/secure_conn.php');
 require_once('database/admin_db.php');
+require_once('database/participants_db.php');
 require_once('database/fields.php');
 require_once('database/validate.php');
 
@@ -97,6 +98,10 @@ switch ($action)
             include 'admin/account/account_login.php';
             break;
         }
+
+        // Update participant_status_map and colorteam aliases
+        update_participants_status();
+        update_colorteam_aliases();
 
         // Display Admin Menu page
         redirect('..');
