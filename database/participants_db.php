@@ -474,7 +474,7 @@
     }
 
     // Update status of a participant
-    function update_status($participant_id, $status_id, $schedule_id = "", $colorteam_id = "")
+    function update_status($participant_id, $status_id, $schedule_id = "", $colorteam_id = "", $clear_absent = false)
     {
         if ($participant_id == NULL) {
             return;
@@ -485,7 +485,10 @@
 
         global $conn;
 
-        $query = 'UPDATE participant_status_map SET statusID = ? WHERE participantID = ?';
+        $query = 'UPDATE participant_status_map SET statusID = ? WHERE ( participantID = ? AND statusID != 8 )';
+        if ($clear_absent == true) {
+            $query = 'UPDATE participant_status_map SET statusID = ? WHERE participantID = ?';
+        }
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -517,6 +520,12 @@
         }
     }
 
+    // Update status of a participant
+    function update_status_absence($participant_id, $status_id)
+    {
+        update_status($participant_id, $status_id, "", "", true);
+    }
+
     function update_participants_status()
     {
         // Now freshly build a status map for every participant
@@ -533,7 +542,7 @@
                     $participant_id, $group_id, $schedule_id, $colorteam_id);
             }
 
-            update_status($participant_id, $status_id, $schedule_id, $colorteam_id);
+            update_status($participant_id, $status_id, $schedule_id, $colorteam_id, false);
         }
     }
 
@@ -636,7 +645,7 @@
         global $conn;
 
         $query = 'UPDATE participant_status_map SET statusID = ?
-                    WHERE groupID = ?';
+                    WHERE ( groupID = ? AND statusID != 8 )';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);
@@ -657,7 +666,7 @@
         global $conn;
 
         $query = 'UPDATE participant_status_map SET statusID = ?
-                    WHERE scheduleID = ?';
+                    WHERE ( scheduleID = ? AND statusID != 8 )';
 
         $statement = $conn->stmt_init();
         $statement->prepare($query);

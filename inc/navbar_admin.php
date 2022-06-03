@@ -15,6 +15,9 @@
         if ($status_id == 7) {
             // Signed out to Parent - no concern
             return "";
+        } else if ($status_id == 8) {
+            // Absent - no concern
+            return "";
         } else if ($status_id == 6) {
             // At Project
             return 'class="status_red"';

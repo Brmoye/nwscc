@@ -160,7 +160,7 @@
                 $participant_id, $group, $firstname, $lastname,
                 $adult, $phone, $email, $assignment, $gender,
                 $grade, $age, $shirtsize, $special, $colorteam);
-            update_status($participant_id, $statuses);
+            update_status_absence($participant_id, $statuses);
             header("Location: .?participant_id=$participant_id");
             break;
 

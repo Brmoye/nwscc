@@ -139,6 +139,7 @@
         <label <?php echo set_status_color(2);?> for="status6">Heading to Project</label><br>
         <input type="radio" id="status7" name="status" value="7">
         <label <?php echo set_status_color(7);?> for="status7">Signed out to Parent</label><br>
+        <br>* Participants marked "Absent" must be manually updated individually, group edits will not affect Absent participants.<br/>
         <br><input type="submit" value="Submit">
         </form>
         <?php echo $Paginator->createLinks( $links, 'pagination pagination-sm', $view_id, $view_name ); ?>
